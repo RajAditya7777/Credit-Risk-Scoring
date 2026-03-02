@@ -26,4 +26,4 @@ venv/
 .streamlit/
 
 # Logs
-*.log
+*.log.venv/

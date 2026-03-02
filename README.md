@@ -1,188 +1,211 @@
-# Credit Risk Scoring System
+# 💳 Credit Risk Scoring Dashboard
 
-### Mid-Sem Machine Learning Project
+### Mid-Semester Machine Learning Project — Intelligent Borrower Default Prediction
 
----
-
-## Introduction
-
-This is my first complete end-to-end Machine Learning project.
-
-In this project, I built a system that predicts whether a borrower is likely to default on a loan. The goal was to understand how ML models work in real-world financial problems and how to deploy them using a simple web interface.
-
-This submission is only for **Milestone 1 (Mid-Sem)** and focuses completely on classical Machine Learning (no agent-based or LLM components).
+![Dashboard](data/images/01_executive_summary.png)
 
 ---
 
-## Problem Statement
+## 📌 Overview
 
-Credit risk is a major concern for banks and financial institutions because loan defaults directly impact revenue and stability.
+This is a complete end-to-end Machine Learning project that predicts whether a borrower is likely to **default on a loan**. The project is deployed as an interactive, professional-grade analytics dashboard built with **Streamlit + Plotly**.
 
-The objective of this project is:
-
-* To predict whether a borrower will default or not.
-* To calculate default probability.
-* To understand which features influence credit risk.
-* To display results using a Streamlit web app.
+> **Milestone 1 (Mid-Sem)** — Classical ML only. No agent-based or LLM components.
 
 ---
 
-## What I Built
+## 📊 Live Dashboard — Key Metrics
 
-This project includes:
+| Metric | Value |
+|---|---|
+| 📦 Total Borrowers | **148,670** |
+| ⚠️ Default Rate | **24.6%** |
+| 🎯 Model Accuracy | **83.9%** |
+| 📈 ROC-AUC Score | **0.867** |
 
-* Data preprocessing pipeline
-* Logistic Regression model
-* Proper train-test split
-* Evaluation using multiple metrics
-* Interactive Streamlit dashboard
-* Manual single-borrower prediction feature
-
----
-
-## Machine Learning Approach
-
-I used **Logistic Regression** as the main model because:
-
-* It is easy to understand.
-* It provides probability output.
-* It is commonly used in credit risk and financial prediction problems.
-* It helps explain how features affect default likelihood.
+These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 ---
 
-## Data Preprocessing
+## 🖥️ Dashboard Screenshots
 
-Before training the model, I handled:
+### 1️⃣ Executive Summary — KPI Cards
 
-* Missing numerical values → Filled with median
-* Missing categorical values → Filled with most frequent value
-* Categorical features → OneHotEncoding
-* Numerical features → Standard Scaling
-* Class imbalance → Used `class_weight="balanced"`
+> Four real-time metric cards styled with per-card accent colors (cyan / red / gold / purple).
 
-This ensures the model does not favor only the majority class.
+![Executive Summary](data/images/01_executive_summary.png)
 
 ---
 
-## System Flow
+### 2️⃣ Data Overview — Churn Distribution
+
+> Interactive Plotly donut chart showing **75.4% No Default** vs **24.6% Default** across 148,670 borrowers.
+
+![Default Distribution](data/images/02_data_overview.png)
+
+---
+
+### 3️⃣ Data Overview — Pearson Correlation Heatmap
+
+> Interactive correlation matrix revealing key relationships:
+> - `loan_amount` ↔ `property_value` → **0.73** (strong positive)
+> - `rate_of_interest` ↔ `Interest_rate_spread` → **0.61** (strong positive)
+> - `income` ↔ `dtir1` → **−0.27** (negative — higher income = lower debt ratio)
+
+![Correlation Matrix](data/images/02_data_overview.png)
+
+---
+
+### 4️⃣ Feature Insights — Logistic Regression Coefficients
+
+> Top feature drivers of credit default, color-coded by direction:
+> 🔴 Red = increases default risk | 🟢 Green = decreases default risk
+
+![Feature Insights](data/images/03_feature_insights.png)
+
+**Key findings:**
+- `credit_type_EQUI` has the **strongest positive** log-odds coefficient (~8.5)
+- `lump_sum_payment_lpsm` significantly increases risk
+- `credit_type_EXP`, `credit_type_CIB`, `credit_type_CRIF` → decrease risk
+
+---
+
+### 5️⃣ Model Performance — Confusion Matrix & ROC Curve
+
+> AUC = 0.8675. The model correctly identifies 5,210 true defaults on the test set.
+
+![Model Performance](data/images/04_model_performance.png)
+
+| | Predicted No Default | Predicted Default |
+|---|---|---|
+| **Actual No Default** | 19,732 ✅ | 2,674 ❌ |
+| **Actual Default** | 2,118 ❌ | 5,210 ✅ |
+
+---
+
+### 6️⃣ Customer Risk Prediction Panel
+
+> Real-time single-borrower risk scoring with a Plotly gauge chart and Low / Medium / High risk badge.
+
+![Risk Prediction](data/images/05_risk_prediction.png)
+
+---
+
+## 🔬 Problem Statement
+
+Credit risk is a major concern for banks and financial institutions — loan defaults directly impact revenue and stability.
+
+**Objectives:**
+- Predict whether a borrower will default (binary classification)
+- Output a calibrated default **probability score**
+- Identify which features most influence credit risk
+- Deliver insights through a professional web dashboard
+
+---
+
+## 🧠 Machine Learning Approach
+
+I used **Logistic Regression** because:
+- It is interpretable and widely used in financial risk
+- It produces calibrated probability outputs
+- Coefficients directly indicate feature impact direction
+- Fast to train even on large datasets (148k+ rows)
+
+### Preprocessing Pipeline
 
 ```
-Upload Dataset (CSV)
-        ↓
-Data Cleaning
-        ↓
-Preprocessing Pipeline
-        ↓
-Train-Test Split
-        ↓
-Logistic Regression Model
-        ↓
-Evaluation Metrics
-        ↓
-Streamlit Web Interface
+Raw CSV
+  ↓ Drop ID column
+  ↓ Numeric features  → Median imputation → StandardScaler
+  ↓ Categorical features → Mode imputation → OneHotEncoder
+  ↓ ColumnTransformer → Pipeline
+  ↓ LogisticRegression(class_weight="balanced", max_iter=1000)
 ```
 
----
-
-## Model Evaluation
-
-I used the following metrics:
-
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* ROC-AUC Score
-* Confusion Matrix
-* ROC Curve
-
-### Why ROC-AUC?
-
-Since credit risk datasets are usually imbalanced, accuracy alone is not enough. ROC-AUC shows how well the model separates defaulters from non-defaulters.
+The `class_weight="balanced"` setting handles the **24.6% class imbalance** automatically.
 
 ---
 
-## Model Performance
+## 📈 Model Evaluation
 
-* Accuracy: ~0.83
-* ROC-AUC: ~0.86
+### Why ROC-AUC and not just Accuracy?
 
-These results show that the model performs well without overfitting.
+In credit risk, the dataset is imbalanced (~75% non-default). A naïve model that always predicts "No Default" gets **75% accuracy but 0% recall on defaults** — completely useless. ROC-AUC measures the model's ability to **rank** defaulters above non-defaulters regardless of threshold.
 
----
-
-## Streamlit Application Features
-
-The web application allows:
-
-* Uploading a borrower dataset
-* Viewing dataset preview and shape
-* Viewing target distribution
-* Training the Logistic Regression model
-* Saving the trained model to `/models`
-* Viewing evaluation metrics (Accuracy, ROC-AUC)
-* Viewing classification report
-* Viewing confusion matrix
-* Viewing ROC curve
-* Predicting default risk for a single borrower manually
-* Viewing default probability and risk category (Low / Medium / High)
+| Metric | Score |
+|---|---|
+| Accuracy | **83.9%** |
+| ROC-AUC | **0.867** |
+| Recall (Defaults) | Captured 5,210 / 7,328 defaults |
+| False Negative Rate | 28.9% (2,118 missed defaults) |
 
 ---
 
-## Risk Category Logic
+## 🗂️ Dataset
 
-Based on predicted probability:
+**Source:** `Loan_Default.csv`
 
-* 0.0 – 0.3 → **Low Risk**
-* 0.3 – 0.6 → **Medium Risk**
-* 0.6 – 1.0 → **High Risk**
+| Property | Value |
+|---|---|
+| Total Records | 148,670 |
+| Features | 34 columns |
+| Target Column | `Status` (0 = No Default, 1 = Default) |
+| Class Balance | No Default: 75.4% / Default: 24.6% |
 
-This makes the output easier to understand for non-technical users.
-
----
-
-## Technologies Used
-
-* Python
-* Scikit-Learn
-* Pandas
-* NumPy
-* Matplotlib
-* Seaborn
-* Streamlit
-* Joblib
+**Key features used:**
+- `loan_amount`, `property_value`, `income` (numeric)
+- `rate_of_interest`, `LTV`, `dtir1`, `Credit_Score` (numeric)
+- `credit_type`, `loan_purpose`, `occupancy_type` (categorical)
 
 ---
 
-## Feature Engineering
+## 🎨 Dashboard Features
 
-Before feeding the data into the model, I dropped columns that are not useful for prediction:
-
-* **`year`** — just a time identifier, not a predictive feature
-* **`ID`** — unique row identifier, carries no information
-* **`rate_of_interest`** — removed to avoid data leakage, as interest rates are often determined after risk is assessed
-
-This helps the model focus only on meaningful borrower characteristics.
+| Section | Description |
+|---|---|
+| **Executive Summary** | 4 KPI cards — Customers, Default Rate, Accuracy, AUC |
+| **Data Overview** | Missing value chart, default donut, histograms, correlation heatmap |
+| **Feature Insights** | Logistic coefficients bar chart + boxplots by default status |
+| **Model Performance** | Interactive confusion matrix, ROC curve, classification report |
+| **Risk Prediction** | Real-time input form → probability gauge → Low/Medium/High badge |
 
 ---
 
-## Project Structure
+## 🛠️ Technologies Used
+
+| Layer | Tool |
+|---|---|
+| Language | Python 3.13 |
+| ML | Scikit-Learn 1.8 (Logistic Regression) |
+| Data | Pandas, NumPy |
+| Visualization | **Plotly** (interactive), Matplotlib, Seaborn |
+| Dashboard | **Streamlit 1.54** |
+| Model Persistence | Joblib |
+
+---
+
+## 📁 Project Structure
 
 ```
 Credit-Risk-Scoring/
 │
 ├── app/
-│   └── streamlit_app.py          # Streamlit web application
+│   └── streamlit_app.py          # Full analytics dashboard (800+ lines)
 │
 ├── data/
 │   └── raw/
-│       └── Loan_Default.csv      # Raw dataset
+│       └── Loan_Default.csv      # 148,670 borrower records
 │
 ├── models/
-│   ├── logistic_model.pkl        # Trained Logistic Regression pipeline
-│   ├── feature_columns.pkl       # Saved feature column names
-│   └── scaler.pkl                # Saved scaler
+│   ├── logistic_model.pkl        # Trained sklearn Pipeline
+│   └── feature_columns.pkl       # Saved feature column names
+│
+├── data/images/                  # Dashboard screenshots
+│   ├── 01_executive_summary.png
+│   ├── 02_data_overview.png
+│   ├── 03_feature_insights.png
+│   ├── 04_model_performance.png
+│   └── 05_risk_prediction.png
 │
 ├── notebooks/
 │   └── EDA.ipynb                 # Exploratory Data Analysis
@@ -194,50 +217,54 @@ Credit-Risk-Scoring/
 
 ---
 
-## How to Run Locally
+## ▶️ How to Run Locally
 
-1. Create virtual environment:
+```bash
+# 1. Clone the repository
+git clone https://github.com/RajAditya7777/Credit-Risk-Scoring
+cd Credit-Risk-Scoring
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
+# 2. Create virtual environment
+python -m venv .venv
+source .venv/bin/activate       # macOS/Linux
+# .venv\Scripts\activate        # Windows
 
-2. Install dependencies:
+# 3. Install dependencies
+pip install -r requirements.txt
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+# 4. Run the dashboard
+streamlit run app/streamlit_app.py
+```
 
-3. Run the app:
-
-   ```bash
-   streamlit run app/streamlit_app.py
-   ```
-
----
-
-## What I Learned
-
-* How to build a complete ML pipeline.
-* How to handle missing values properly.
-* Why evaluation metrics matter beyond accuracy.
-* How to deploy an ML model using Streamlit.
-* How to save and reuse trained models with Joblib.
-
-This project helped me understand how machine learning moves from theory to a working application.
+Then open **http://localhost:8501** and either:
+- Click **"🗄 Use Default Dataset"** in the sidebar to load the built-in data instantly
+- Or upload your own CSV
 
 ---
 
-## Conclusion
+## 🔑 Risk Category Logic
 
-This project successfully demonstrates how classical Machine Learning can be used to solve a real-world financial problem like credit risk scoring.
+| Probability Range | Category | Colour | Action |
+|---|---|---|---|
+| 0% – 30% | 🟢 Low Risk | Mint | Approve loan |
+| 30% – 60% | 🟠 Medium Risk | Gold | Additional review |
+| 60% – 100% | 🔴 High Risk | Red | Decline / collateral required |
 
-It is my first full ML system that includes:
+---
 
-* Data preprocessing
-* Model training
-* Evaluation
-* Deployment via web interface
+## 💡 What I Learned
 
-This forms the foundation for future expansion into more advanced AI-based systems.
+- How to build a complete ML pipeline from raw CSV to deployed web app
+- Why `class_weight="balanced"` is essential for imbalanced financial data
+- How to interpret logistic regression coefficients as feature importance
+- Why ROC-AUC is the right metric for credit risk (not accuracy)
+- How to create professional Plotly interactive charts inside Streamlit
+- How to use `@st.cache_resource` and `@st.cache_data` for performance
+
+---
+
+## 🔭 Conclusion
+
+This project successfully demonstrates how classical Machine Learning solves a real-world financial problem. Starting from a raw 148,670-row borrower dataset, the pipeline produces an **83.9% accurate model with 0.867 AUC**, surfaced through a professional dark-themed analytics dashboard that any business stakeholder could use.
+
+> *This forms the foundation for Milestone 2, where advanced models (ensemble methods, neural networks) and potentially agentic components will be explored.*
