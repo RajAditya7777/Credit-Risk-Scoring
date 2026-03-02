@@ -41,7 +41,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Interactive Plotly donut chart showing **75.4% No Default** vs **24.6% Default** across 148,670 borrowers.
 
-![Default Distribution](data/images/02_data_overview.png)
+![Default Distribution](data/images/02_data_overview1.png)
 
 ---
 
@@ -52,7 +52,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 > - `rate_of_interest` ↔ `Interest_rate_spread` → **0.61** (strong positive)
 > - `income` ↔ `dtir1` → **−0.27** (negative — higher income = lower debt ratio)
 
-![Correlation Matrix](data/images/02_data_overview.png)
+![Correlation Matrix](data/images/02_data_overview2.png)
 
 ---
 
