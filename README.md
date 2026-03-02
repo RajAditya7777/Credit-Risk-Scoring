@@ -2,7 +2,7 @@
 
 ### Mid-Semester Machine Learning Project — Intelligent Borrower Default Prediction
 
-![Dashboard](data/images/01_executive_summary.png)
+![Dashboard](data/images/01_executive_summarys.png)
 
 ---
 
@@ -33,7 +33,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Four real-time metric cards styled with per-card accent colors (cyan / red / gold / purple).
 
-![Executive Summary](data/images/01_executive_summary.png)
+![Executive Summary](data/images/01_executive_summarys.png)
 
 ---
 
@@ -41,7 +41,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Interactive Plotly donut chart showing **75.4% No Default** vs **24.6% Default** across 148,670 borrowers.
 
-![Default Distribution](data/images/02_data_overview1.png)
+![Default Distribution](data/images/02_data_overview1s.png)
 
 ---
 
@@ -52,7 +52,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 > - `rate_of_interest` ↔ `Interest_rate_spread` → **0.61** (strong positive)
 > - `income` ↔ `dtir1` → **−0.27** (negative — higher income = lower debt ratio)
 
-![Correlation Matrix](data/images/02_data_overview2.png)
+![Correlation Matrix](data/images/02_data_overview2s.png)
 
 ---
 
@@ -61,7 +61,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 > Top feature drivers of credit default, color-coded by direction:
 > 🔴 Red = increases default risk | 🟢 Green = decreases default risk
 
-![Feature Insights](data/images/03_feature_insights.png)
+![Feature Insights](data/images/03_feature_insightss.png)
 
 **Key findings:**
 - `credit_type_EQUI` has the **strongest positive** log-odds coefficient (~8.5)
@@ -74,7 +74,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > AUC = 0.8675. The model correctly identifies 5,210 true defaults on the test set.
 
-![Model Performance](data/images/04_model_performance.png)
+![Model Performance](data/images/04_model_performances.png)
 
 | | Predicted No Default | Predicted Default |
 |---|---|---|
@@ -87,7 +87,7 @@ These metrics are computed on a **20% held-out test split** (29,734 samples).
 
 > Real-time single-borrower risk scoring with a Plotly gauge chart and Low / Medium / High risk badge.
 
-![Risk Prediction](data/images/05_risk_prediction.png)
+![Risk Prediction](data/images/05_risk_predictions.png)
 
 ---
 
@@ -201,11 +201,11 @@ Credit-Risk-Scoring/
 │   └── feature_columns.pkl       # Saved feature column names
 │
 ├── data/images/                  # Dashboard screenshots
-│   ├── 01_executive_summary.png
+│   ├── 01_executive_summarys.png
 │   ├── 02_data_overview.png
-│   ├── 03_feature_insights.png
-│   ├── 04_model_performance.png
-│   └── 05_risk_prediction.png
+│   ├── 03_feature_insightss.png
+│   ├── 04_model_performances.png
+│   └── 05_risk_predictions.png
 │
 ├── notebooks/
 │   └── EDA.ipynb                 # Exploratory Data Analysis
